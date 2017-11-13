@@ -11,14 +11,10 @@ namespace PFM.Models
         public virtual DbSet<Transactions> Transactions { get; set; }
         public virtual DbSet<User> User { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(@"Server=tcp:personalfinancemanager.database.windows.net,1433;Initial Catalog=PersonalFinanceManagerDB;Persist Security Info=False;User ID=Group6;Password=Sabekaza6;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-            }
-        }
+        public PersonalFinanceManagerDBContext(DbContextOptions<PersonalFinanceManagerDBContext> options)
+          : base(options)
+        { }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
