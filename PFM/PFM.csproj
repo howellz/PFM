@@ -9,6 +9,8 @@
     <Content Remove="Views\NewFolder\**" />
     <EmbeddedResource Remove="Views\NewFolder\**" />
     <None Remove="Views\NewFolder\**" />
+    <Compile Remove="Controllers\StartUpController.cs" />
+    <Content Remove="Views\StartUpPage\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
