@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<PFM.Models.Transactions>
 
 @{
-    ViewData["Title"] = "Test Change";
+    ViewData["Title"] = "Transactions";
 }
 
 <h2>Index</h2>
@@ -12,9 +12,12 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Value)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
+			<th>
+			    Remaining
+		    </th>
             <th>
                 @Html.DisplayNameFor(model => model.Subcategory)
             </th>
@@ -28,8 +31,9 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Value)
+                $@Html.DisplayFor(modelItem => item.Value)
             </td>
+			    $@Html.DisplayFor(modelItem => item.Subcategory.Value)
             <td>
                 @Html.DisplayFor(modelItem => item.Subcategory.SubcategoryName)
             </td>

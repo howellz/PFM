@@ -1,0 +1,11 @@
+﻿@model PFM.Models.User
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
