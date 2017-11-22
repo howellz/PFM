@@ -21,7 +21,7 @@ namespace PFM.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User);
+            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
 
