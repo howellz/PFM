@@ -7,6 +7,68 @@
 
 <h2>Index</h2>
 
+<div id="TabsSet1">
+
+
+    <ul>
+        @foreach (var i in ViewBag.Categories)
+        {
+            <li><a href="#@i.CategoryName">@i.CategoryName</a></li>
+        }
+
+        <li><a asp-action="Create">+</a></li>
+    </ul>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form asp-action="Edit">
+        @foreach (var i in ViewBag.Categories)
+        {
+           
+            <div id=@i.CategoryName>
+@foreach (var j in Model)
+{
+    if (j.Category.CategoryName == i.CategoryName)
+    {
+        <input type="hidden" asp-for="@j.SubcategoryId" />
+        <input type="hidden" asp-for="@j.CategoryId" />
+                <table class="table">
+                    <tbody>
+                            <tr>
+                                <td>
+                                    <label asp-for="@j.SubcategoryName" class="control-label"></label>
+                                    <input asp-for="@j.SubcategoryName" class="form-control" />
+                                    <span asp-validation-for="@j.SubcategoryName" class="text-danger"></span>
+                                </td>
+                                <td>
+                                    <label asp-for="@j.Value" class="control-label"></label>
+                                    <input asp-for="@j.Value" class="form-control" />
+                                    <span asp-validation-for="@j.Value" class="text-danger"></span>
+                                </td>
+                                <td>
+                                    <input type="submit" value="Save" class="btn btn-default" />
+
+                                    <a asp-action="Edit" asp-route-id="@j.SubcategoryId" asp-route-SubcategoryName="@j.SubcategoryName" asp-route-Value="@j.Value" asp-route-category=i>Edit</a> |
+                                    <a asp-controller="Subcategories" asp-action="Delete" asp-route-id="@j.SubcategoryId">Delete</a>
+                                </td>
+
+                            </tr>
+                        
+                    </tbody>
+                </table>
+    }
+}
+            </div>
+            }
+    </form>
+
+</div>
+
+<script>
+                $(function () {
+                    $("#TabsSet1").tabs();
+                });
+</script>
+
+
             <table class="table">
                 <thead>
                     <tr>
@@ -36,6 +98,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Category.CategoryName)
                             </td>
+
                             <td>
                                 <a asp-action="Edit" asp-route-id="@item.SubcategoryId">Edit</a> |
                                 <a asp-action="Details" asp-route-id="@item.SubcategoryId">Details</a> |

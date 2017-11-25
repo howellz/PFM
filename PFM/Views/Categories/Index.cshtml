@@ -17,52 +17,65 @@
 </p>
 <div id="TabsSet1">
 
-   
-        <ul>
-@foreach (var i in Model)
-{
+
+    <ul>
+        @foreach (var i in Model)
+        {
             <li><a href="#@i.CategoryName">@i.CategoryName</a></li>
-}
-        </ul>
-@foreach (var i in Model)
-{
-        <div id=@i.CategoryName>
-            <h1>Welcome to this test tab</h1>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => i.Subcategories)
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in i.Subcategories)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(Model => item.SubcategoryName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Value)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        }
+
+        <li><a asp-action="Create">+</a></li>
+    </ul>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <form asp-action="Edit2">
+                @foreach (var i in Model)
+                {
+                    <div id=@i.CategoryName>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => i.Subcategories)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in i.Subcategories)
+                                {
+                                    <tr>
+                                        <td>
+                                                <input type="hidden" asp-for="@item.SubcategoryId" />
+                                                <input type="hidden" asp-for="@item.CategoryId" />
+                                                <input asp-for="@item.SubcategoryName" class="form-control" />
+                                                <span asp-validation-for="@item.SubcategoryName" class="text-danger"></span>
+                                        </td>
+                                        <td>
+                                            <input type="hidden" asp-for="@item.SubcategoryId" />
+                                            <input asp-for="@item.Value" class="form-control" />
+                                            <span asp-validation-for="@item.Value" class="text-danger"></span>
+                                        </td>
+                                        <td>
+
+                                            <a asp-area="" asp-controller="Subcategories" asp-action="Edit" asp-route-id="@item.SubcategoryId">Edit</a>
+                                            <a asp-area="" asp-controller="Subcategories" asp-action="Delete" asp-route-id="@item.SubcategoryId" >Delete</a>
+                                        </td>
+
+                                    </tr>
+                                }
+                        </tbody>
+                        </table>
+                    </div>
+
+                }
+
+                <a asp-area="" asp-controller="Subcategories" asp-action="Create">Add subcategory</a>
+            </form>
+
         </div>
 
-}
-    </div>
-
-<script>
-$(function () {
-$("#TabsSet1").tabs();
-});
-</script>
+            <script>
+                $(function () {
+                    $("#TabsSet1").tabs();
+                });
+            </script>

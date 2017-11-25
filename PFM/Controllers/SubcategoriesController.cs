@@ -22,6 +22,7 @@ namespace PFM.Controllers
         public async Task<IActionResult> Index()
         {
             var personalFinanceManagerDBContext = _context.Subcategories.Include(s => s.Category);
+            ViewBag.Categories = _context.Categories;
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
 
