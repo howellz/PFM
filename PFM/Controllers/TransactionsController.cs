@@ -157,6 +157,36 @@ namespace PFM.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Reset()
+        {
+
+            var transactions = _context.Transactions
+                .Include(t => t.User);
+            if (transactions == null)
+            {
+                return NotFound();
+            }
+
+            return View(await transactions.ToListAsync());
+        }
+
+        // POST: Transactions/Delete/5
+        [HttpPost, ActionName("Reset")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetConfirmed()
+        {
+            var transactions = _context.Transactions;
+            if (transactions.Count() > 0)
+            {
+                foreach (var i in transactions)
+                {
+                    _context.Transactions.Remove(i);
+                }
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         private bool TransactionsExists(int id)
         {
             return _context.Transactions.Any(e => e.TransactionsId == id);

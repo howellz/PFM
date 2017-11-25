@@ -1,0 +1,17 @@
+﻿@model IEnumerable<PFM.Models.Transactions>
+
+@{
+    ViewData["Title"] = "Reset";
+}
+<h2>Reset</h2>
+<h3>Are you sure you want to reset transactions?</h3>
+<div>
+    <h4>Transactions</h4>
+    <hr />
+    <dl class="dl-horizontal"></dl>
+
+    <form asp-action="Reset">
+        <input type="submit" value="Reset" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
