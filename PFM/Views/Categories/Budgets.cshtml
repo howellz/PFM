@@ -1,0 +1,85 @@
+﻿@model IEnumerable<PFM.Models.Categories>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+
+<h2>Index</h2>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+<div id="TabsSet1">
+
+
+    <ul>
+       <li><a href="#Total">Total Budgets</a></li>
+
+        <li><a href="#Remaining">Remaining Budgets</a></li>
+    </ul>
+<div id=Total>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Categories
+                </th>
+                <th>Total Budgets</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => i.CategoryName):
+                    </td>
+                    <td>
+                        $@ViewBag.totalBuget(i.CategoryId)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    </div>
+    <div id=Remaining>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Categories
+                        </th>
+                        <th>Remaining Budgets</th>
+                    </tr>
+                </thead>
+                <tbody>
+@foreach (var i in Model)
+{
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => i.CategoryName):
+                        </td>
+                        <td>
+                            $@ViewBag.deductionsSum(i.CategoryId)
+                        </td>
+                    </tr>
+}
+                </tbody>
+            </table>
+    </div>
+</div>
+
+    <script>
+        $(function () {
+            $("#TabsSet1").tabs();
+        });
+    </script>

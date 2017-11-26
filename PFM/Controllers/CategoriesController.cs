@@ -22,9 +22,28 @@ namespace PFM.Controllers
         public async Task<IActionResult> Index()
         {
             var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
+          
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
 
+        // GET: Categories
+        public async Task<IActionResult> Home()
+        {
+            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
+
+            var userID = _context.User.FirstOrDefault().UserId;
+            ViewData["ds"] = totalBudget(userID) - totalDeductionsSum(userID) ;
+            return View(await personalFinanceManagerDBContext.ToListAsync());
+        }
+        public async Task<IActionResult> Budgets()
+        {
+            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
+
+            var userID = _context.User.FirstOrDefault().UserId;
+            ViewBag.deductionsSum = new Func<int, int>(remaining);
+            ViewBag.totalBuget = new Func<int, int>(catSum);
+            return View(await personalFinanceManagerDBContext.ToListAsync());
+        }
         // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -156,6 +175,73 @@ namespace PFM.Controllers
             return _context.Categories.Any(e => e.CategoryId == id);
         }
         
+        private int catSum(int catID)
+        {
+            var sum = 0;
+
+            foreach (var subcat in _context.Subcategories.Include(e => e.Category))
+            {
+                if (subcat.Category.CategoryId == catID)
+                {
+                    sum += subcat.Value;
+                }
+            }
+            return sum;
+        }
+
+        private int totalBudget(int userID)//
+        {
+            var sum = 0;
+            foreach (var subcat in _context.Subcategories.Include(e => e.Category))
+            {
+                if (subcat.Category.UserId == userID)
+                {
+                    // var cats = user.Categories;
+                        sum += subcat.Value;
+                }
+            }
+            return sum;
+        }
+
+
+        public int totalDeductionsSum(int userID)
+        {
+
+            //var cats = _context.Categories.SingleOrDefault(e => e.CategoryId == catID);
+            var sum = 0;
+            var trans = _context.Transactions;
+
+            foreach (var i in trans)
+            {
+                if (i.UserId == userID)
+                {
+                    sum += i.Value;
+                }
+            }
+            return sum;
+        }
+
+        public int deductionsSum(int catID)
+        {
+            var sum = 0;
+            var trans = _context.Transactions.Include(e => e.Subcategory);
+
+            foreach (var i in trans)
+            {
+                if (i.Subcategory.CategoryId == catID)
+                {
+                    sum += i.Value;
+                }
+            }
+            return sum;
+        }
+
+        public int remaining(int catID)
+        {
+            var sum = 0;
+            sum = catSum(catID) - deductionsSum(catID);
+            return sum;
+        }
 
     }
 }

@@ -1,0 +1,20 @@
+﻿@model IEnumerable<PFM.Models.Categories>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Personal Finance Manager</h1>
+    <p class="lead">Personal Finance Manager is a system for people to keep track of their current expenditures and plan for the future.</p>
+    <p><a asp-area="" asp-controller="Users" asp-action="Login" class="btn btn-primary btn-lg" >Login &raquo;</a></p>
+	<br>
+	<p><a asp-area="" asp-controller="Users" asp-action="Create" class="btn btn-primary btn-lg" >Create A New Account &raquo;</a></p>
+
+ 
+    <p>
+        Remaining Buget: $@ViewData["ds"]
+    </p>
+
+    <p><a asp-area="" asp-controller="Transactions" asp-action="Reset" class="btn btn-primary btn-lg">Reset transactions&raquo;</a></p>
+    
+</div>

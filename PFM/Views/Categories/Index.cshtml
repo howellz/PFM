@@ -15,6 +15,8 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+
 <div id="TabsSet1">
 
 
@@ -59,6 +61,7 @@
 
                                             <a asp-area="" asp-controller="Subcategories" asp-action="Edit" asp-route-id="@item.SubcategoryId">Edit</a>
                                             <a asp-area="" asp-controller="Subcategories" asp-action="Delete" asp-route-id="@item.SubcategoryId" >Delete</a>
+                                            <a asp-area="" asp-controller="Subcategories" asp-action="Details" asp-route-id="@item.SubcategoryId">Transactions</a>
                                         </td>
 
                                     </tr>

@@ -36,7 +36,9 @@ namespace PFM.Controllers
 
             var subcategories = await _context.Subcategories
                 .Include(s => s.Category)
+                .Include(i => i.Transactions)
                 .SingleOrDefaultAsync(m => m.SubcategoryId == id);
+            ViewData["ds"] = deductionsSum(id);
             if (subcategories == null)
             {
                 return NotFound();
@@ -156,5 +158,41 @@ namespace PFM.Controllers
         {
             return _context.Subcategories.Any(e => e.SubcategoryId == id);
         }
+
+
+        public int deductionsSum(int? subcatID)//int catID
+        {
+
+            //var cats = _context.Categories.SingleOrDefault(e => e.CategoryId == catID);
+            var sum = 0;
+
+            var subcats = _context.Subcategories.SingleOrDefault(e => e.SubcategoryId == subcatID);
+            
+                foreach (var j in subcats.Transactions)
+                {
+                    sum += j.Value;
+                }
+            
+            return sum;
+        }
+
+        public int totalDeductionsSum()//int catID
+        {
+
+            //var cats = _context.Categories.SingleOrDefault(e => e.CategoryId == catID);
+            var sum = 0;
+
+            var subcats = _context.Subcategories.Include(s => s.Category).Include(s => s.Transactions);
+            
+            foreach (var i in subcats)
+            {
+                    foreach (var j in i.Transactions)
+                    {
+                        sum += j.Value;
+                    }
+            }
+            return sum;
+        }
+
     }
 }
