@@ -19,24 +19,33 @@ namespace PFM.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? userID)
         {
             var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
 
-            var userID = _context.User.FirstOrDefault().UserId;
+            //var userID = _context.User.FirstOrDefault().UserId;
+            
             ViewBag.userID = userID;
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
 
         // GET: Categories
-        public async Task<IActionResult> Home(int userID)
+        public async Task<IActionResult> Home()
         {
-            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
+            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(c => c.Subcategories);
+            
+            var i = TempData["id"] as int?;
+            ViewBag.userID = i;
+            ViewBag.remaining = totalRemaining(i);
 
-            //var userID = _context.User.FirstOrDefault().UserId;
-            ViewData["ds"] = totalBudget(userID) - totalDeductionsSum(userID) ;
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
+
+        public int totalRemaining(int? userID)
+        {
+            return totalBudget(userID) - totalDeductionsSum(userID);
+        }
+
         public async Task<IActionResult> Budgets()
         {
             var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
@@ -200,7 +209,7 @@ namespace PFM.Controllers
             return sum;
         }
 
-        private int totalBudget(int userID)//
+        private int totalBudget(int? userID)//
         {
             var sum = 0;
             foreach (var subcat in _context.Subcategories.Include(e => e.Category))
@@ -215,7 +224,7 @@ namespace PFM.Controllers
         }
 
 
-        public int totalDeductionsSum(int userID)
+        public int totalDeductionsSum(int? userID)
         {
 
             //var cats = _context.Categories.SingleOrDefault(e => e.CategoryId == catID);

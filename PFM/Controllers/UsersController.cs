@@ -28,17 +28,24 @@ namespace PFM.Controllers
         {
             return View();
         }
-
-        //POST: Users/Create
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(String email, String password)
         {
+
             var user = await _context.User.SingleOrDefaultAsync(m => m.Email == email && m.Password == password);
+            if (user != null)
+            {
+                //return some error view
+            }
             var id = user.UserId;
-            ViewData["userID"] = id;
-            return View("Home");
+            TempData["id"] = id;
+            return RedirectToAction("Home", "Categories");
+
         }
+
+       
 
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -79,6 +86,7 @@ namespace PFM.Controllers
             }
             return View(user);
         }
+        
 
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
