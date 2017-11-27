@@ -1,4 +1,4 @@
-﻿@using WebApplication3.Views.Manage
+﻿@using PFM.Views.Manage
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

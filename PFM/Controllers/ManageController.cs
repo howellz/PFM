@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using WebApplication3.Models;
-using WebApplication3.Models.ManageViewModels;
-using WebApplication3.Services;
+using PFM.Models;
+using PFM.Models.ManageViewModels;
+using PFM.Services;
 
-namespace WebApplication3.Controllers
+namespace PFM.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]

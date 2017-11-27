@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using WebApplication3.Services;
+using PFM.Services;
 
-namespace WebApplication3.Services
+namespace PFM.Services
 {
     public static class EmailSenderExtensions
     {
