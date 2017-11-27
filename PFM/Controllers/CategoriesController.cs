@@ -29,11 +29,11 @@ namespace PFM.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Home()
+        public async Task<IActionResult> Home(int userID)
         {
             var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
 
-            var userID = _context.User.FirstOrDefault().UserId;
+            //var userID = _context.User.FirstOrDefault().UserId;
             ViewData["ds"] = totalBudget(userID) - totalDeductionsSum(userID) ;
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }

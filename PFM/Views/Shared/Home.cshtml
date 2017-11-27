@@ -13,7 +13,7 @@
     <p><a asp-area="" asp-controller="Categories" asp-action="Index" class="btn btn-primary btn-lg">Weekly Planner &raquo;</a></p>
  
     <p>
-        Remaining Buget: $@ViewData["ds"]
+        @ViewData["userID"] Remaining Buget: $@ViewData["ds"]
     </p>
 
     <p><a asp-area="" asp-controller="Transactions" asp-action="Reset" class="btn btn-primary btn-lg">Reset transactions&raquo;</a></p>
