@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace WebApplication3.Models.ManageViewModels
+namespace PFM.Models.ManageViewModels
 {
     public class ExternalLoginsViewModel
     {
