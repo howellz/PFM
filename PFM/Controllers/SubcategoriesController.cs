@@ -153,7 +153,7 @@ namespace PFM.Controllers
             {
                 if (i.TransactionsId == id)
                 {
-                    _context.Subcategories.Remove(i);
+                   // _context.Subcategories.Remove(i);
                 }
             }
 
