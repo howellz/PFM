@@ -46,7 +46,7 @@ namespace PFM
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Categories}/{action=Home}/{id?}");
             });
         }
     }

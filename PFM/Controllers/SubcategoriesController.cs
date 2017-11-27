@@ -148,6 +148,15 @@ namespace PFM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
+            foreach (var i in _context.Transactions)
+            {
+                if (i.TransactionsId == id)
+                {
+                    _context.Subcategories.Remove(i);
+                }
+            }
+
             var subcategories = await _context.Subcategories.SingleOrDefaultAsync(m => m.SubcategoryId == id);
             _context.Subcategories.Remove(subcategories);
             await _context.SaveChangesAsync();

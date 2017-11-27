@@ -22,7 +22,9 @@ namespace PFM.Controllers
         public async Task<IActionResult> Index()
         {
             var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
-          
+
+            var userID = _context.User.FirstOrDefault().UserId;
+            ViewBag.userID = userID;
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
 
@@ -164,7 +166,16 @@ namespace PFM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            foreach (var i in _context.Subcategories)
+            {
+                if (i.CategoryId == id)
+                {
+                    _context.Subcategories.Remove(i);
+                }
+            }
+            
             var categories = await _context.Categories.SingleOrDefaultAsync(m => m.CategoryId == id);
+            
             _context.Categories.Remove(categories);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

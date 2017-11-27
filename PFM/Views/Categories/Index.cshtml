@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<PFM.Models.Categories>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Weekly Planner";
 }
 
 
@@ -11,11 +11,7 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
 
 
-<h2>Index</h2>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
+<h2>Weekly Planner</h2>
 
 <div id="TabsSet1">
 
@@ -23,21 +19,30 @@
     <ul>
         @foreach (var i in Model)
         {
+            if (i.UserId == ViewBag.userID)
+            {
             <li><a href="#@i.CategoryName">@i.CategoryName</a></li>
+            }
         }
 
-        <li><a asp-action="Create">+</a></li>
+        <li><a asp-route-name=""  asp-route-id="@ViewBag.userID" asp-action="Create">+</a></li>
     </ul>
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <form asp-action="Edit2">
                 @foreach (var i in Model)
                 {
+                    if (i.UserId == ViewBag.userID)
+                    {
                     <div id=@i.CategoryName>
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>
                                         @Html.DisplayNameFor(model => i.Subcategories)
+                                    </th>
+
+                                    <th>
+                                        Budget
                                     </th>
                                     <th></th>
                                 </tr>
@@ -67,12 +72,21 @@
                                     </tr>
                                 }
                         </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>
+                                        <a asp-area="" asp-controller="Subcategories" asp-route-id="@ViewBag.userID" asp-action="Create">Add subcategory</a>
+                                    </td>
+                                    <td>
+                                        <a asp-route-name="" asp-route-id="@i.CategoryId" asp-action="Delete">Delete category</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
-
+                    }
                 }
-
-                <a asp-area="" asp-controller="Subcategories" asp-action="Create">Add subcategory</a>
+                
             </form>
 
         </div>
