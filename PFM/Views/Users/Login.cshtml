@@ -8,7 +8,7 @@
 <div>
     <h4>User</h4>
     <hr />
-    <dl class="dl-horizontal">
+    <!--<dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.UserFirstName)
         </dt>
@@ -34,7 +34,9 @@
             @Html.DisplayFor(model => model.Password)
         </dd>
     </dl>
-
+	-->
+    <div class="row">
+    <div class="col-md-4">
     <form asp-action="Login">
         <div class="form-group">
             <label asp-for="Email" class="control-label"></label>
@@ -49,6 +51,8 @@
         <input type="submit" value="Login" class="btn btn-default" /> |
         <a asp-action="Index">Back to List</a>
     </form>
+	</div>
+    </div>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

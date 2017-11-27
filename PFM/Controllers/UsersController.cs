@@ -24,6 +24,22 @@ namespace PFM.Controllers
             return View(await _context.User.ToListAsync());
         }
 
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        //POST: Users/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(String email, String password)
+        {
+            var user = await _context.User.SingleOrDefaultAsync(m => m.Email == email && m.Password == password);
+            var id = user.UserId;
+            ViewData["userID"] = id;
+            return View("Home");
+        }
+
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
