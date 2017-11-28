@@ -92,10 +92,13 @@ namespace PFM.Controllers
             {
                 _context.Add(categories);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Categories", new { userID = categories.UserId });
             }
+            
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", categories.UserId);
             return View(categories);
+           // return RedirectToAction("Index", "Categories", new { userID = categories.UserId });
+
         }
 
         // GET: Categories/Edit/5
@@ -145,7 +148,7 @@ namespace PFM.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Categories", new { userID = categories.UserId });
             }
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", categories.UserId);
             return View(categories);
@@ -187,7 +190,8 @@ namespace PFM.Controllers
             
             _context.Categories.Remove(categories);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction("Index", "Categories", new { userID = categories.UserId });
         }
 
         private bool CategoriesExists(int id)
