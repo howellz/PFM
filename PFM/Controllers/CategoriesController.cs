@@ -21,10 +21,11 @@ namespace PFM.Controllers
         // GET: Categories
         public async Task<IActionResult> Index(int? userID)
         {
-            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
+            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User.UserId).Include(i => i.Subcategories);
+ 
 
             //var userID = _context.User.FirstOrDefault().UserId;
-            
+
             ViewBag.userID = userID;
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
