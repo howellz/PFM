@@ -76,7 +76,7 @@ namespace PFM.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,UserFirstName,UserLastName,Email,Password")] User user)
+        public async Task<IActionResult> Create([Bind("UserId,UserFirstName,UserLastName,Email,ConfirmEmail,Password,ConfirmPassword")] User user)
         {
             if (ModelState.IsValid)
             {
