@@ -19,18 +19,17 @@
 
 
 <div id="TabsSet1">
-    <ul>
         @foreach (var i in Model)
         {
-            <li><a href="#@i.CategoryName">@i.CategoryName</a></li>
-
+            <ul>
+                <li><a href="#@i.CategoryName">@i.CategoryName</a></li>
+            </ul>
 		    <div id="TabsSet2">
                 <ul>
                     
                 </ul>
             </div>
         }
-    </ul>
 </div>
 
     <script>

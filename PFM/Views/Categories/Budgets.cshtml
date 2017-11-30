@@ -38,6 +38,8 @@
         <tbody>
             @foreach (var i in Model)
             {
+                if (i.UserId == ViewBag.userID)
+                {
                 <tr>
                     <td>
                         @Html.DisplayFor(model => i.CategoryName):
@@ -46,6 +48,7 @@
                         $@ViewBag.totalBuget(i.CategoryId)
                     </td>
                 </tr>
+                }
             }
         </tbody>
     </table>
@@ -64,6 +67,8 @@
                 <tbody>
 @foreach (var i in Model)
 {
+    if (i.UserId == ViewBag.userID)
+    {
                     <tr>
                         <td>
                             @Html.DisplayFor(model => i.CategoryName):
@@ -72,6 +77,7 @@
                             $@ViewBag.deductionsSum(i.CategoryId)
                         </td>
                     </tr>
+    }
 }
                 </tbody>
             </table>
