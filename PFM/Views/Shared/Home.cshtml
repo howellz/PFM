@@ -4,24 +4,47 @@
 }
 
 <div class="navbar-brand pull-right">
-                <ul class="nav navbar-nav">
-                    <p><a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg">Logout&raquo;</a></p>
-                </ul>
+    <ul class="nav navbar-nav">
+        <p><a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg">Logout&raquo;</a></p>
+    </ul>
 </div>
 
 <div class="jumbotron">
+
     <h1>Personal Finance Manager</h1>
+    <div class="navbar-brand pull-left">
+        <ul class="nav navbar-left">
+            <li><a asp-area="" asp-controller="Categories" asp-action="Index" asp-route-userID="@ViewBag.userID" class="btn btn-primary btn-lg">Weekly Planner &raquo;</a></li>
+
+            <li><a asp-area="" asp-controller="Categories" asp-action="Transaction" asp-route-userID="@ViewBag.userID" class="btn btn-primary btn-lg">Transaction&raquo;</a></li>
+            <li><a asp-area="" asp-controller="Categories" asp-action="Budgets" asp-route-userID="@ViewBag.userID" class="btn btn-primary btn-lg">Budgets&raquo;</a></li>
+            <li><a asp-area="" asp-controller="Transactions" asp-action="Reset" asp-route-userID="@ViewBag.userID" class="btn btn-primary btn-lg">Reset transactions&raquo;</a></li>
+        </ul>
+    </div>
+
     <p class="lead">Personal Finance Manager is a system for people to keep track of their current expenditures and plan for the future.</p>
-    
-	<br>
+
+    <br>
+    <br>
+    <label ></label>
+    <div class="panel-body pull-right">
+        <p>
+            Remaining Buget:  $@ViewBag.remaining
+        </p>
+        <br>
+        @if (@ViewBag.remaining <= 0)
+            { <p style="color:#FF0000">You have overspent!</p>}
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
 
-    <p><a asp-area="" asp-controller="Categories" asp-action="Index" asp-route-userID="@ViewBag.userID" class ="btn btn-primary btn-lg">Weekly Planner &raquo;</a></p>
- 
-    <p>
-        Remaining Buget:  $@ViewBag.remaining
-    </p>
-
-    <p><a asp-area="" asp-controller="Transactions" asp-action="Reset" class="btn btn-primary btn-lg">Reset transactions&raquo;</a></p>
-    
 </div>
+

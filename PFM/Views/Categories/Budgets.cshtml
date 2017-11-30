@@ -29,10 +29,10 @@
     <table class="table">
         <thead>
             <tr>
-                <th>
+                <th style="width: 50%;">
                     Categories
                 </th>
-                <th>Total Budgets</th>
+                <th style="width: 50%;">Total Budgets</th>
             </tr>
         </thead>
         <tbody>
@@ -65,20 +65,44 @@
                     </tr>
                 </thead>
                 <tbody>
-@foreach (var i in Model)
-{
-    if (i.UserId == ViewBag.userID)
+    @foreach (var i in Model)
     {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(model => i.CategoryName):
-                        </td>
-                        <td>
-                            $@ViewBag.deductionsSum(i.CategoryId)
-                        </td>
-                    </tr>
+        if (i.UserId == ViewBag.userID)
+        {
+
+            @if (ViewBag.deductionsSum(i.CategoryId)<=0)
+                    {
+                <tr style="color:#FF0000">
+
+                    <td>
+                        @Html.DisplayFor(model => i.CategoryName):
+                    </td>
+                    <td>
+                        $@ViewBag.deductionsSum(i.CategoryId) 
+                    </td>
+
+                    <td> 
+                        Over spent!
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(model => i.CategoryName):
+                    </td>
+                    <td>
+                        $@ViewBag.deductionsSum(i.CategoryId)
+                    </td>
+
+                    <td>
+                    </td>
+                </tr>
+            }
+        }
     }
-}
                 </tbody>
             </table>
     </div>

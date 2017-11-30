@@ -18,22 +18,4 @@
 </p>
 
 
-<div id="TabsSet1">
-        @foreach (var i in Model)
-        {
-            <ul>
-                <li><a href="#@i.CategoryName">@i.CategoryName</a></li>
-            </ul>
-		    <div id="TabsSet2">
-                <ul>
-                    
-                </ul>
-            </div>
-        }
-</div>
 
-    <script>
-        $(function () {
-            $("#TabsSet1").tabs();
-        });
-    </script>
