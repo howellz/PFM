@@ -35,4 +35,5 @@ namespace PFM.Models
         public ICollection<Categories> Categories { get; set; }
         public ICollection<Transactions> Transactions { get; set; }
     }
+
 }

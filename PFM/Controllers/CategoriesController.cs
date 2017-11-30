@@ -85,16 +85,21 @@ namespace PFM.Controllers
 
 
         // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? userID)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
+            ViewBag.userID = userID;
+
             var categories = await _context.Categories
                 .Include(c => c.User)
+                .Include(c => c.Subcategories)
                 .SingleOrDefaultAsync(m => m.CategoryId == id);
+                
+                
             if (categories == null)
             {
                 return NotFound();

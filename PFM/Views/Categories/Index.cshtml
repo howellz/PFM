@@ -29,7 +29,7 @@
                 {
                     if (i.UserId == ViewBag.userID)
                     {
-                       
+                       <a asp-area="" asp-action="Details" asp-route-userID="@ViewBag.userID" class ="btn btn-primary btn-lg">Some text</a>
                     <div id=@i.CategoryName>
                         <table class="table">
                             <thead>

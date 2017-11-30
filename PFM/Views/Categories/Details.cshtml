@@ -25,6 +25,33 @@
     </dl>
 </div>
 <div>
+    
+<script type = "text/javascript">
+    window.onload = function() {
+	var chart = new CanvasJS.Chart("chartContainer", {
+        title:{ text: "Categories Chart"},
+		legend:{ maxWidth: 350, itemWidth:120},
+	    data: [{
+	        type: "pie",
+		    showInLegend: true,
+		    legendText: "{indexLabel}",
+	        dataPoints: [
+	            for i in each model.subcategories
+                { y: @i.value,
+	                legendText:
+	                @i.subcategoryName, label:
+	                @i.subcategoryName
+	            }]
+	        }]
+		});
+        chart.render();
+	}
+</script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.jk">
+</script>
+	
+</div>
+<div>
     <a asp-action="Edit" asp-route-id="@Model.CategoryId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
