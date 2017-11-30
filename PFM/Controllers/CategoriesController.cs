@@ -56,6 +56,13 @@ namespace PFM.Controllers
             ViewBag.totalBuget = new Func<int, int>(catSum);
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
+
+        public IActionResult Transaction()
+        {
+            return View();
+        }
+
+
         // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
