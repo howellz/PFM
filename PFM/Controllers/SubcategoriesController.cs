@@ -50,7 +50,8 @@ namespace PFM.Controllers
         // GET: Subcategories/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+
+            ViewData["CategoryId"] = new SelectList(_context.Categories.Include(m => m.User), "CategoryId", "CategoryName");
             return View();
         }
 
@@ -61,17 +62,20 @@ namespace PFM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("SubcategoryId,CategoryId,Value,SubcategoryName")] Subcategories subcategories)
         {
+            
 
-            var category = _context.Categories.SingleOrDefault(m => m.CategoryId == subcategories.Category.CategoryId);
             if (ModelState.IsValid)
             {
+               var category =_context.Categories.SingleOrDefault(m => m.CategoryId == subcategories.CategoryId);
+                
+                int userID = category.UserId;
                 _context.Add(subcategories);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Categories", new { userID = subcategories.Category.UserId });
+                return RedirectToAction("Index", "Categories", new { userID = userID });
+                
             }
-
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", subcategories.CategoryId);
-            return RedirectToAction("Index", "Categories", new { userID = category.UserId });
+            return View(subcategories);
         }
 
         // GET: Subcategories/Edit/5
@@ -103,6 +107,7 @@ namespace PFM.Controllers
                 return NotFound();
             }
 
+
             if (ModelState.IsValid)
             {
                 try
@@ -121,11 +126,15 @@ namespace PFM.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index", "Categories", new { userID = subcategories.Category.UserId });
+
+
+                var subcategory = _context.Subcategories.Include(m => m.Category).SingleOrDefault(m => m.SubcategoryId == id);
+
+                return RedirectToAction("Index", "Categories", new { userID = subcategory.Category.UserId });
             }
             
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", subcategories.CategoryId);
-            return RedirectToAction("Index", "Categories", new { userID = subcategories.Category.UserId });
+            return RedirectToAction("Index", "Categories", new { userID =  subcategories.Category.UserId });
         }
 
         // GET: Subcategories/Delete/5

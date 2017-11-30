@@ -72,7 +72,8 @@
                             <tfoot>
                                 <tr>
                                     <td>
-                                        <a asp-area="" asp-controller="Subcategories" asp-route-id="@ViewBag.userID" asp-action="Create">Add subcategory</a>
+
+                                        <a asp-area="" asp-controller="Subcategories" asp-route-userID="@ViewBag.userID" asp-action="Create">Add subcategory</a>
                                     </td>
                                     <td>
                                         <a asp-route-name="" asp-route-id="@i.CategoryId" asp-action="Delete">Delete category</a>
