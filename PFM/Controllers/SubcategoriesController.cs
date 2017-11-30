@@ -61,14 +61,17 @@ namespace PFM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("SubcategoryId,CategoryId,Value,SubcategoryName")] Subcategories subcategories)
         {
+
+            var category = _context.Categories.SingleOrDefault(m => m.CategoryId == subcategories.Category.CategoryId);
             if (ModelState.IsValid)
             {
                 _context.Add(subcategories);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Categories", new { userID = subcategories.Category.UserId });
             }
+
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", subcategories.CategoryId);
-            return View(subcategories);
+            return RedirectToAction("Index", "Categories", new { userID = category.UserId });
         }
 
         // GET: Subcategories/Edit/5
@@ -118,10 +121,11 @@ namespace PFM.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Categories", new { userID = subcategories.Category.UserId });
             }
+            
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", subcategories.CategoryId);
-            return View(subcategories);
+            return RedirectToAction("Index", "Categories", new { userID = subcategories.Category.UserId });
         }
 
         // GET: Subcategories/Delete/5
@@ -148,19 +152,16 @@ namespace PFM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-
-            foreach (var i in _context.Transactions)
+            var subcategories = await _context.Subcategories.Include(m => m.Category).SingleOrDefaultAsync(m => m.SubcategoryId == id);
+            foreach(var i in subcategories.Transactions)
             {
-                if (i.TransactionsId == id)
-                {
-                   // _context.Subcategories.Remove(i);
-                }
-            }
 
-            var subcategories = await _context.Subcategories.SingleOrDefaultAsync(m => m.SubcategoryId == id);
+                _context.Transactions.Remove(i);
+            }
+            var userID2 = subcategories.Category.UserId;
             _context.Subcategories.Remove(subcategories);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Categories", new { userID = userID2});
         }
 
         private bool SubcategoriesExists(int id)
