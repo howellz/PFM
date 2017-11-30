@@ -57,9 +57,13 @@ namespace PFM.Controllers
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
 
-        public IActionResult Transaction()
+        public async Task<IActionResult> Transaction(int? userID)
         {
-            return View();
+            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
+
+            ViewBag.userID = userID;
+
+            return View(await personalFinanceManagerDBContext.ToListAsync());
         }
 
 

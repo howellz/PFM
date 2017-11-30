@@ -2,4 +2,39 @@
 @{
     ViewData["Title"] = "Transactions";
 }
+
 <h1>Transactions</h1>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+
+<h2>Index</h2>
+<p>
+	<a asp-area="" asp-controller="Transactions" asp-action="Create"> Create New</a>
+
+</p>
+
+
+<div id="TabsSet1">
+    <ul>
+        @foreach (var i in Model)
+        {
+            <li><a href="#@i.CategoryName">@i.CategoryName</a></li>
+
+		    <div id="TabsSet2">
+                <ul>
+                    
+                </ul>
+            </div>
+        }
+    </ul>
+</div>
+
+    <script>
+        $(function () {
+            $("#TabsSet1").tabs();
+        });
+    </script>
