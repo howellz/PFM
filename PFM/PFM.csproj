@@ -5,13 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\AccountViewModels\**" />
     <Compile Remove="Views\NewFolder\**" />
-    <Content Remove="Models\AccountViewModels\**" />
     <Content Remove="Views\NewFolder\**" />
-    <EmbeddedResource Remove="Models\AccountViewModels\**" />
     <EmbeddedResource Remove="Views\NewFolder\**" />
-    <None Remove="Models\AccountViewModels\**" />
     <None Remove="Views\NewFolder\**" />
     <Compile Remove="Controllers\StartUpController.cs" />
     <Content Remove="Views\StartUpPage\Index.cshtml" />
@@ -19,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\AccountViewModels\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />

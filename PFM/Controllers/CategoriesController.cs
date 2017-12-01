@@ -96,7 +96,6 @@ namespace PFM.Controllers
 
             var categories = await _context.Categories
                 .Include(c => c.User)
-                .Include(c => c.Subcategories)
                 .SingleOrDefaultAsync(m => m.CategoryId == id);
                 
                 

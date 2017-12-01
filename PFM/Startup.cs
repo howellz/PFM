@@ -22,7 +22,9 @@ namespace PFM
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc(options =>{
+                options.RespectBrowserAcceptHeader = true;
+            });
             var connection = @"Server=tcp:personalfinancemanager.database.windows.net,1433;Initial Catalog=PersonalFinanceManagerDB;Persist Security Info=False;User ID=Group6;Password=Sabekaza6;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             services.AddDbContext<PersonalFinanceManagerDBContext>(options => options.UseSqlServer(connection));
         }
