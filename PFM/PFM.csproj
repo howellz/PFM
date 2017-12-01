@@ -15,6 +15,7 @@
     <None Remove="Views\NewFolder\**" />
     <Compile Remove="Controllers\StartUpController.cs" />
     <Content Remove="Views\StartUpPage\Index.cshtml" />
+    <Compile Remove="Models\LoginVM.cs" />
   </ItemGroup>
 
   <ItemGroup>

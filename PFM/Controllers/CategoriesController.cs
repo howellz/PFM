@@ -47,26 +47,59 @@ namespace PFM.Controllers
             return totalBudget(userID) - totalDeductionsSum(userID);
         }
 
-        public async Task<IActionResult> Budgets()
+        public async Task<IActionResult> Budgets(int? userID)
+        {
+            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
+            
+            ViewBag.deductionsSum = new Func<int, int>(remaining);
+            ViewBag.totalBuget = new Func<int, int>(catSum);
+
+            ViewBag.totalBuget = new Func<int, int>(catSum);
+            ViewBag.userID = userID;
+            ViewBag.max = mostExpensiveCategory(userID);
+            return View(await personalFinanceManagerDBContext.ToListAsync());
+        }
+
+        public Categories mostExpensiveCategory(int? userID)
+        {
+            var user = _context.User.Include(c => c.Categories).SingleOrDefault(c => c.UserId==userID);
+            var max = user.Categories.FirstOrDefault();
+            foreach(var i in user.Categories)
+            {
+                if (catSum(max.CategoryId) < catSum(i.CategoryId))
+                {
+                    max = i;
+                }
+            }
+            return max;
+        }
+
+        public async Task<IActionResult> Transaction(int? userID)
         {
             var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
 
-            var userID = _context.User.FirstOrDefault().UserId;
-            ViewBag.deductionsSum = new Func<int, int>(remaining);
-            ViewBag.totalBuget = new Func<int, int>(catSum);
+            ViewBag.userID = userID;
+
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
+
+
         // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? userID)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
+            ViewBag.userID = userID;
+
             var categories = await _context.Categories
                 .Include(c => c.User)
+                .Include(c => c.Subcategories)
                 .SingleOrDefaultAsync(m => m.CategoryId == id);
+                
+                
             if (categories == null)
             {
                 return NotFound();

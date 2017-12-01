@@ -50,7 +50,8 @@ namespace PFM.Controllers
         // GET: Subcategories/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+
+            ViewData["CategoryId"] = new SelectList(_context.Categories.Include(m => m.User), "CategoryId", "CategoryName");
             return View();
         }
 
@@ -61,11 +62,17 @@ namespace PFM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("SubcategoryId,CategoryId,Value,SubcategoryName")] Subcategories subcategories)
         {
+            
+
             if (ModelState.IsValid)
             {
+               var category =_context.Categories.SingleOrDefault(m => m.CategoryId == subcategories.CategoryId);
+                
+                int userID = category.UserId;
                 _context.Add(subcategories);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Categories", new { userID = userID });
+                
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", subcategories.CategoryId);
             return View(subcategories);
@@ -100,6 +107,7 @@ namespace PFM.Controllers
                 return NotFound();
             }
 
+
             if (ModelState.IsValid)
             {
                 try
@@ -118,10 +126,15 @@ namespace PFM.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+
+                var subcategory = _context.Subcategories.Include(m => m.Category).SingleOrDefault(m => m.SubcategoryId == id);
+
+                return RedirectToAction("Index", "Categories", new { userID = subcategory.Category.UserId });
             }
+            
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", subcategories.CategoryId);
-            return View(subcategories);
+            return RedirectToAction("Index", "Categories", new { userID =  subcategories.Category.UserId });
         }
 
         // GET: Subcategories/Delete/5
@@ -148,19 +161,16 @@ namespace PFM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-
-            foreach (var i in _context.Transactions)
+            var subcategories = await _context.Subcategories.Include(m => m.Category).SingleOrDefaultAsync(m => m.SubcategoryId == id);
+            foreach(var i in subcategories.Transactions)
             {
-                if (i.TransactionsId == id)
-                {
-                   // _context.Subcategories.Remove(i);
-                }
-            }
 
-            var subcategories = await _context.Subcategories.SingleOrDefaultAsync(m => m.SubcategoryId == id);
+                _context.Transactions.Remove(i);
+            }
+            var userID2 = subcategories.Category.UserId;
             _context.Subcategories.Remove(subcategories);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Categories", new { userID = userID2});
         }
 
         private bool SubcategoriesExists(int id)

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PFM", "PFM\PFM.csproj", "{BE17F0A4-15B9-41D9-A4A8-DA0CDFA5441B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFM", "PFM\PFM.csproj", "{BE17F0A4-15B9-41D9-A4A8-DA0CDFA5441B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,5 +21,11 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C0CEF3BD-A673-497C-89EB-FE129A93982C}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$0.VersionControlPolicy = $2
 	EndGlobalSection
 EndGlobal

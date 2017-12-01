@@ -1,0 +1,76 @@
+﻿@model IEnumerable<PFM.Models.Categories>
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+<h1>Transactions</h1>
+
+<p>
+	<a asp-area="" asp-controller="Transactions" asp-action="Create"> Create New</a>
+</p>
+
+<div id="TabsSet1">
+    <ul>
+        @foreach (var i in Model)
+        {
+            if (i.UserId == ViewBag.userID)
+            {
+            <li><a href="#@i.CategoryName">@i.CategoryName</a></li>
+            }
+        }
+	</ul>	
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <form asp-action="Edit">
+                @foreach (var i in Model) 
+                {
+                    if (i.UserId == ViewBag.userID)
+                    {
+                       <a asp-area="" asp-action="Details" asp-route-userID="@ViewBag.userID" class ="btn btn-primary btn-lg">Some text</a>
+                    <div id=@i.CategoryName>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => i.Subcategories)
+                                    </th>
+
+                                    <th>
+                                        Transaction Amount
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in i.Subcategories)
+                                {
+                                    <tr>
+                                        <td>
+                                               @item.SubcategoryName
+                                        </td>
+                                        <td>
+                                               Temp
+                                        </td>
+                                        <td>
+                                             <a asp-area="" asp-controller="Transactions" asp-action="Edit">Edit</a>
+                                             <a asp-area="" asp-controller="Transactions" asp-action="Details">Details</a>
+                                             <a asp-area="" asp-controller="Transactions" asp-action="Delete">Delete</a>
+                                        </td>
+
+                                    </tr>
+                                }
+                        </tbody>
+                            
+                        </table>
+                    </div>
+                    }
+                }
+                
+            </form>
+
+        </div>
+
+            <script>
+                $(function () {
+                    $("#TabsSet1").tabs();
+                });
+            </script>
