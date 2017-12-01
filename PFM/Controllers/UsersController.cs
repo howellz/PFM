@@ -28,16 +28,17 @@ namespace PFM.Controllers
         {
             return View();
         }
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(String email, String password)
         {
 
             var user = await _context.User.SingleOrDefaultAsync(m => m.Email == email && m.Password == password);
-            if (user != null)
+            if (user == null)
             {
-                //return some error view
+                ViewBag.errormsg = "User name or password is incorrect!";
+                return View();
             }
             var id = user.UserId;
             TempData["id"] = id;
@@ -45,7 +46,7 @@ namespace PFM.Controllers
 
         }
 
-       
+
 
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -86,7 +87,7 @@ namespace PFM.Controllers
             }
             return View(user);
         }
-        
+
 
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)

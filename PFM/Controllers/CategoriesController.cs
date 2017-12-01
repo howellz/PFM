@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+
+using System.Web;
 using PFM.Models;
 
 namespace PFM.Controllers
@@ -22,19 +24,52 @@ namespace PFM.Controllers
         public async Task<IActionResult> Index(int? userID)
         {
             var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
- 
+
 
             //var userID = _context.User.FirstOrDefault().UserId;
+
+
+            ViewBag.subDeductionsSum = new Func<int, int>(subDeductionsSum);
+            ViewBag.subRemaining = new Func<int, int>(subRemaining);
 
             ViewBag.userID = userID;
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
 
+
+        public int subDeductionsSum(int id)
+        {
+
+            var total = 0;
+
+            var subcategory = _context.Subcategories.Include(s => s.Category).Include(s => s.Transactions).SingleOrDefault(s => s.SubcategoryId == id);
+
+            foreach (var i in subcategory.Transactions)
+            {
+                total += i.Value;
+            }
+
+            return total;
+        }
+
+        public int subRemaining(int id)
+        {
+
+            var remaining = 0;
+
+            var subcategory = _context.Subcategories.Include(s => s.Category).Include(s => s.Transactions).SingleOrDefault(s => s.SubcategoryId == id);
+
+            remaining = subcategory.Value - subDeductionsSum(id);
+
+            return remaining;
+        }
+
+
         // GET: Categories
         public async Task<IActionResult> Home()
         {
             var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(c => c.Subcategories);
-            
+
             var i = TempData["id"] as int?;
             ViewBag.userID = i;
             ViewBag.remaining = totalRemaining(i);
@@ -50,7 +85,7 @@ namespace PFM.Controllers
         public async Task<IActionResult> Budgets(int? userID)
         {
             var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
-            
+
             ViewBag.deductionsSum = new Func<int, int>(remaining);
             ViewBag.totalBuget = new Func<int, int>(catSum);
 
@@ -62,9 +97,9 @@ namespace PFM.Controllers
 
         public Categories mostExpensiveCategory(int? userID)
         {
-            var user = _context.User.Include(c => c.Categories).SingleOrDefault(c => c.UserId==userID);
+            var user = _context.User.Include(c => c.Categories).SingleOrDefault(c => c.UserId == userID);
             var max = user.Categories.FirstOrDefault();
-            foreach(var i in user.Categories)
+            foreach (var i in user.Categories)
             {
                 if (catSum(max.CategoryId) < catSum(i.CategoryId))
                 {
@@ -92,24 +127,28 @@ namespace PFM.Controllers
                 return NotFound();
             }
 
+
             ViewBag.userID = userID;
 
             var categories = await _context.Categories
                 .Include(c => c.User)
                 .SingleOrDefaultAsync(m => m.CategoryId == id);
-                
-                
+
             if (categories == null)
             {
                 return NotFound();
             }
 
+            List<Subcategories> subcategories = categories.Subcategories.ToList<Subcategories>();
+            ViewBag.subcategories = subcategories;
+            ViewBag.length = subcategories.Count();
             return View(categories);
         }
 
         // GET: Categories/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
+            ViewBag.id = id;
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email");
             return View();
         }
@@ -127,10 +166,10 @@ namespace PFM.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Categories", new { userID = categories.UserId });
             }
-            
+
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", categories.UserId);
             return View(categories);
-           // return RedirectToAction("Index", "Categories", new { userID = categories.UserId });
+            // return RedirectToAction("Index", "Categories", new { userID = categories.UserId });
 
         }
 
@@ -181,7 +220,7 @@ namespace PFM.Controllers
                         throw;
                     }
                 }
-            return RedirectToAction("Index", "Categories", new { userID = categories.UserId });
+                return RedirectToAction("Index", "Categories", new { userID = categories.UserId });
             }
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", categories.UserId);
             return View(categories);
@@ -218,9 +257,9 @@ namespace PFM.Controllers
                     _context.Subcategories.Remove(i);
                 }
             }
-            
+
             var categories = await _context.Categories.SingleOrDefaultAsync(m => m.CategoryId == id);
-            
+
             _context.Categories.Remove(categories);
             await _context.SaveChangesAsync();
 
@@ -231,7 +270,7 @@ namespace PFM.Controllers
         {
             return _context.Categories.Any(e => e.CategoryId == id);
         }
-        
+
         private int catSum(int catID)
         {
             var sum = 0;
@@ -254,7 +293,7 @@ namespace PFM.Controllers
                 if (subcat.Category.UserId == userID)
                 {
                     // var cats = user.Categories;
-                        sum += subcat.Value;
+                    sum += subcat.Value;
                 }
             }
             return sum;

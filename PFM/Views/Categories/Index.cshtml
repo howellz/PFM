@@ -7,7 +7,7 @@
 
 
 
-<h2>Weekly Planner @ViewBag.userID</h2>
+<h2>Weekly Planner</h2>
 
 <div id="TabsSet1">
 
@@ -17,11 +17,11 @@
         {
             if (i.UserId == ViewBag.userID)
             {
-            <li><a href="#@i.CategoryName">@i.CategoryName</a></li>
+                <li><a href="#@i.CategoryId">@i.CategoryName</a></li>
             }
         }
 
-        <li><a asp-route-name=""  asp-route-id="@ViewBag.userID" asp-action="Create">+</a></li>
+        <li> <a asp-route-name="" asp-route-id="@ViewBag.userID" asp-action="Create">+</a></li>
     </ul>
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <form asp-action="Edit">
@@ -29,8 +29,8 @@
                 {
                     if (i.UserId == ViewBag.userID)
                     {
-                       <a asp-area="" asp-action="Details" asp-route-userID="@ViewBag.userID" class ="btn btn-primary btn-lg">Some text</a>
-                    <div id=@i.CategoryName>
+                       
+                    <div id=@i.CategoryId>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -41,42 +41,79 @@
                                     <th>
                                         Budget
                                     </th>
+                                    <th>
+                                        Deductions
+                                    </th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in i.Subcategories)
                                 {
-                                    <tr>
-                                        <td>
-                                                <input type="hidden" asp-for="@item.SubcategoryId" />
-                                                <input type="hidden" asp-for="@item.CategoryId" />
-                                                <input asp-for="@item.SubcategoryName" class="form-control" />
-                                                <span asp-validation-for="@item.SubcategoryName" class="text-danger"></span>
-                                        </td>
-                                        <td>
-                                            <input type="hidden" asp-for="@item.SubcategoryId" />
-                                            <input asp-for="@item.Value" class="form-control" />
-                                            <span asp-validation-for="@item.Value" class="text-danger"></span>
-                                        </td>
-                                        <td>
+                                        @if (ViewBag.subRemaining(item.SubcategoryId) <= 0)
+                                        {
+                                            <tr style="color:#FF0000">
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.SubcategoryName)
+                                                </td>
+                                                <td>
+                                                    $@Html.DisplayFor(modelItem => item.Value)
+                                                </td>
+                                                <td>
+                                                    @Html.ViewBag.subDeductionsSum(item.SubcategoryId)
+                                                </td>
+                                                <td>Over Spent!</td>
+                                                <td>
 
-                                            <a asp-area="" asp-controller="Subcategories" asp-action="Edit" asp-route-id="@item.SubcategoryId">Edit</a>
-                                            <a asp-area="" asp-controller="Subcategories" asp-action="Delete" asp-route-id="@item.SubcategoryId" >Delete</a>
-                                            <a asp-area="" asp-controller="Subcategories" asp-action="Details" asp-route-id="@item.SubcategoryId">Transactions</a>
-                                        </td>
+                                                    <a asp-area="" asp-controller="Subcategories" asp-action="Edit" asp-route-id="@item.SubcategoryId">Edit</a>
+                                                    <a asp-area="" asp-controller="Subcategories" asp-action="Delete" asp-route-id="@item.SubcategoryId">Delete</a>
+                                                    <a asp-area="" asp-controller="Subcategories" asp-action="Details" asp-route-id="@item.SubcategoryId">Transactions</a>
+                                                </td>
+                                                
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.SubcategoryName)
+                                                </td>
+                                                <td>
+                                                    $@Html.DisplayFor(modelItem => item.Value)
+                                                </td>
+                                                <td>
+                                                    @Html.ViewBag.subDeductionsSum(item.SubcategoryId)
+                                                </td>
+                                                <td></td>
+                                                <td>
 
-                                    </tr>
+                                                    <a asp-area="" asp-controller="Subcategories" asp-action="Edit" asp-route-id="@item.SubcategoryId">Edit</a>
+                                                    <a asp-area="" asp-controller="Subcategories" asp-action="Delete" asp-route-id="@item.SubcategoryId">Delete</a>
+                                                    <a asp-area="" asp-controller="Subcategories" asp-action="Details" asp-route-id="@item.SubcategoryId">Transactions</a>
+                                                </td>
+                                            </tr>
+
+                                        }
+
                                 }
                         </tbody>
                             <tfoot>
                                 <tr>
-                                    <td>
-
-                                        <a asp-area="" asp-controller="Subcategories" asp-route-userID="@ViewBag.userID" asp-action="Create">Add subcategory</a>
+                                    <td class="pull-left">
+                                        <a asp-area="" asp-controller="Subcategories" asp-route-userID="@ViewBag.userID" asp-route-id ="@i.CategoryId" asp-action="Create">Add subcategory</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td >
+                                        <a asp-area="" asp-route-id="@i.CategoryId" asp-route-userID="@ViewBag.userID" asp-action="Edit">Edit Category</a>
                                     </td>
                                     <td>
                                         <a asp-route-name="" asp-route-id="@i.CategoryId" asp-action="Delete">Delete category</a>
+                                    </td>
+                                    <td>
+                                        <a asp-area="" asp-action="Details" asp-route-userID="@ViewBag.userID" asp-route-id="@i.CategoryId" class="btn btn-primary btn-lg">Some text</a>
                                     </td>
                                 </tr>
                             </tfoot>
@@ -86,11 +123,12 @@
                 }
                 
             </form>
-
+        
         </div>
 
             <script>
                 $(function () {
                     $("#TabsSet1").tabs();
+                    
                 });
             </script>

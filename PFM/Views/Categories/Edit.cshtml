@@ -12,7 +12,8 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="CategoryId" />
+            <input id="UserId" name="UserId" type="hidden" value="@Model.UserId">
             <div class="form-group">
                 <label asp-for="CategoryName" class="control-label"></label>
                 <input asp-for="CategoryName" class="form-control" />
@@ -26,7 +27,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Categories" asp-route-userID="@Model.UserId" asp-action="Index">Back to planner</a>
 </div>
 
 @section Scripts {
