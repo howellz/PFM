@@ -156,7 +156,7 @@ namespace PFM.Controllers
             var transactions = await _context.Transactions.SingleOrDefaultAsync(m => m.TransactionsId == id);
             _context.Transactions.Remove(transactions);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Transaction", "Categories", new { userID = transactions.UserId });
         }
 
         public async Task<IActionResult> Reset(int userID)
