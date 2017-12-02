@@ -46,8 +46,10 @@ namespace PFM.Controllers
         }
 
         // GET: Transactions/Create
-        public IActionResult Create()
+        public IActionResult Create(int id, int userID)
         {
+            ViewBag.id = id;
+            ViewBag.userID = userID;
             ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName");
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email");
             return View();
@@ -62,9 +64,11 @@ namespace PFM.Controllers
         {
             if (ModelState.IsValid)
             {
+                var subcategory = _context.Subcategories.SingleOrDefault(m => m.SubcategoryId == transactions.SubcategoryId);
+
                 _context.Add(transactions);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Transactions", new { userID = subcategories.UserId });
             }
             ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName", transactions.SubcategoryId);
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", transactions.UserId);
