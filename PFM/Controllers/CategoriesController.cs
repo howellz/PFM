@@ -68,9 +68,13 @@ namespace PFM.Controllers
         // GET: Categories
         public async Task<IActionResult> Home()
         {
-            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(c => c.Subcategories);
 
+            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(c => c.Subcategories);
             var i = TempData["id"] as int?;
+
+            var user = _context.User.SingleOrDefault(c => c.UserId == i);
+
+            ViewBag.name = user.FullName;
             ViewBag.userID = i;
             ViewBag.remaining = totalRemaining(i);
 
@@ -111,11 +115,10 @@ namespace PFM.Controllers
 
         public async Task<IActionResult> Transaction(int? userID)
         {
-            var personalFinanceManagerDBContext = _context.Subcategories.Include(c => c.Category).Include(i => i.Transactions);
+            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
 
             ViewBag.userID = userID;
 
-            ViewBag.Categories = _context.Categories;
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
 

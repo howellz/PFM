@@ -5,12 +5,14 @@
 
 <div class="navbar-brand pull-right">
     <ul class="nav navbar-nav">
-        <p><a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg">Logout&raquo;</a></p>
+        <p>
+			<li><a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg">Logout&raquo;</a></li>
+		</p>
     </ul>
 </div>
 
 <div class="jumbotron">
-
+    <h3 class=" ">Welcome @ViewBag.name</h3>
     <h1>Personal Finance Manager</h1>
     <div class="navbar-brand pull-left">
         <ul class="nav navbar-left">
@@ -47,4 +49,3 @@
 
 
 </div>
-

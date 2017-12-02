@@ -83,7 +83,7 @@ namespace PFM.Controllers
             {
                 _context.Add(user);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(user);
         }
@@ -135,7 +135,7 @@ namespace PFM.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Home", "Categories", new { userID = user.UserId });
             }
             return View(user);
         }
@@ -166,7 +166,7 @@ namespace PFM.Controllers
             var user = await _context.User.SingleOrDefaultAsync(m => m.UserId == id);
             _context.User.Remove(user);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
 
         private bool UserExists(int id)
