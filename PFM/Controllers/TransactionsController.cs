@@ -46,9 +46,8 @@ namespace PFM.Controllers
         }
 
         // GET: Transactions/Create
-        public IActionResult Create(int id, int userID)
+        public IActionResult Create(int userID)
         {
-            ViewBag.id = id;
             ViewBag.userID = userID;
             ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName");
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email");
@@ -68,12 +67,13 @@ namespace PFM.Controllers
 
                 _context.Add(transactions);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Transactions", new { userID = subcategories.UserId });
+                return RedirectToAction("Transaction", "Categories", new { userID = transactions.UserId });
             }
             ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName", transactions.SubcategoryId);
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", transactions.UserId);
             return View(transactions);
         }
+
 
         // GET: Transactions/Edit/5
         public async Task<IActionResult> Edit(int? id)
