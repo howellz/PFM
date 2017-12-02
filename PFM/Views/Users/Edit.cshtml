@@ -7,6 +7,7 @@
 <h2>Edit</h2>
 
 <h4>User</h4>
+<li><a asp-area="" asp-controller="Users" asp-action="Delete" asp-route-id="@Model.UserId" class="btn btn-primary btn-lg">Delete Account&raquo;</a></li>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -41,7 +42,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Categories" asp-route-userID="@Model.UserId" asp-action="Home">Home</a>
 </div>
 
 @section Scripts {
