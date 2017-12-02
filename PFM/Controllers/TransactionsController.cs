@@ -62,8 +62,6 @@ namespace PFM.Controllers
         {
             if (ModelState.IsValid)
             {
-                var subcategory = _context.Subcategories.SingleOrDefault(m => m.SubcategoryId == transactions.SubcategoryId);
-
                 _context.Add(transactions);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Transaction", "Categories", new { userID = transactions.UserId });
@@ -121,7 +119,7 @@ namespace PFM.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Transaction", "Categories", new { userID = transactions.UserId });
             }
             ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName", transactions.SubcategoryId);
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", transactions.UserId);
