@@ -8,26 +8,26 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Subcategories</h4>
+    <h4>Subcategory</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Value)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Value)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SubcategoryName)
+            Subcategory Name
         </dt>
         <dd>
             @Html.DisplayFor(model => model.SubcategoryName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Category)
+            Category
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Category.CategoryName)
+        </dd>
+        <dt>
+            Budget
+        </dt>
+        <dd>
+            $@Html.DisplayFor(model => model.Value)
         </dd>
     </dl>
     

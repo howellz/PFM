@@ -48,9 +48,10 @@ namespace PFM.Controllers
         }
 
         // GET: Subcategories/Create
-        public IActionResult Create(int id)
+        public IActionResult Create(int id, int userID)
         {
             ViewBag.id = id;
+            ViewBag.userID = userID;
             ViewData["CategoryId"] = new SelectList(_context.Categories.Include(m => m.User), "CategoryId", "CategoryName");
             return View();
         }

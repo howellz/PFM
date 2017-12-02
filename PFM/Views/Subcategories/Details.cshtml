@@ -8,20 +8,22 @@
 
 <div>
 
-    <h5>Value: @Html.DisplayFor(model => model.Value)</h5>
-    <hr />
+    <h4>Budget: @Html.DisplayFor(model => model.Value)</h4>
+    <hr />  
     
     <dl class="dl-horizontal">
+
+        <dt>Total deductions:</dt>
+        <dd>$@ViewData["ds"]</dd>
+        <dt></dt>
         @foreach (var i in Model.Transactions)
         {
             <dt>Deduction:</dt>
             <dd>
-                @Html.DisplayFor(model => i.Value)
+                $@Html.DisplayFor(model => i.Value)
             </dd>
 
         }
-        <dt>Total deductions:</dt>
-        <dd>@ViewData["ds"]</dd>
     </dl>
 </div>
 <div>

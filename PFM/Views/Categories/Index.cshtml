@@ -60,7 +60,7 @@
                                                     $@Html.DisplayFor(modelItem => item.Value)
                                                 </td>
                                                 <td>
-                                                    @Html.ViewBag.subDeductionsSum(item.SubcategoryId)
+                                                    $@Html.ViewBag.subDeductionsSum(item.SubcategoryId)
                                                 </td>
                                                 <td>Over Spent!</td>
                                                 <td>
@@ -82,7 +82,7 @@
                                                     $@Html.DisplayFor(modelItem => item.Value)
                                                 </td>
                                                 <td>
-                                                    @Html.ViewBag.subDeductionsSum(item.SubcategoryId)
+                                                    $@Html.ViewBag.subDeductionsSum(item.SubcategoryId)
                                                 </td>
                                                 <td></td>
                                                 <td>
@@ -111,9 +111,6 @@
                                     </td>
                                     <td>
                                         <a asp-route-name="" asp-route-id="@i.CategoryId" asp-action="Delete">Delete category</a>
-                                    </td>
-                                    <td>
-                                        <a asp-area="" asp-action="Details" asp-route-userID="@ViewBag.userID" asp-route-id="@i.CategoryId" class="btn btn-primary btn-lg">Some text</a>
                                     </td>
                                 </tr>
                             </tfoot>

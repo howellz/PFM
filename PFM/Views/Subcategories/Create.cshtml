@@ -6,7 +6,7 @@
 
 <h2>Create</h2>
 
-<h4>Subcategories</h4>
+<h4>Subcategory</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,12 +16,12 @@
                 <input id="CategoryId" name="CategoryId" type="hidden" value="@ViewBag.id">
 
             <div class="form-group">
-                <label asp-for="SubcategoryName" class="control-label"></label>
+                Subcategory Name
                 <input asp-for="SubcategoryName" class="form-control" />
                 <span asp-validation-for="SubcategoryName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Value" class="control-label"></label>
+                Budget
                 <input asp-for="Value" class="form-control" />
                 <span asp-validation-for="Value" class="text-danger"></span>
             </div>
@@ -33,7 +33,7 @@
 </div>
 
 <div>
-    <a asp-controller="Categories"  asp-action="Index" asp-route-userID="@Model.Category.UserId">Back to planner</a>
+    <a asp-controller="Categories"  asp-action="Index" asp-route-userID="@ViewBag.userID ">Back to planner</a>
 </div>
 
 @section Scripts {

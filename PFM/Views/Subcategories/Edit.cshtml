@@ -6,7 +6,7 @@
 
 <h2>Edit</h2>
 
-<h4>Subcategories</h4>
+<h4>Subcategory</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,17 +14,17 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="SubcategoryId" />
             <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
+                Category
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Value" class="control-label"></label>
+                Budget
                 <input asp-for="Value" class="form-control" />
                 <span asp-validation-for="Value" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SubcategoryName" class="control-label"></label>
+                Subcategory Name
                 <input asp-for="SubcategoryName" class="form-control" />
                 <span asp-validation-for="SubcategoryName" class="text-danger"></span>
             </div>
