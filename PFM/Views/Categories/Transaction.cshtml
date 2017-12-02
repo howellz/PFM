@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PFM.Models.Categories>
+﻿@model IEnumerable<PFM.Models.Subcategories>
 @{
     ViewData["Title"] = "Transactions";
 }
@@ -6,70 +6,74 @@
 <h1>Transactions</h1>
 
 <p>
-	<a asp-area="" asp-controller="Transactions" asp-action="Create"> Create New</a>
+    <a asp-area="" asp-controller="Transactions" asp-action="Create"> Create New</a>
 </p>
 
 <div id="TabsSet1">
     <ul>
-        @foreach (var i in Model)
+        @foreach (var i in ViewBag.Categories)
         {
             if (i.UserId == ViewBag.userID)
             {
-            <li><a href="#@i.CategoryName">@i.CategoryName</a></li>
+                <li><a href="#@i.CategoryName">@i.CategoryName</a></li>
             }
         }
-	</ul>	
-	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <form asp-action="Edit">
-                @foreach (var i in Model) 
-                {
-                    if (i.UserId == ViewBag.userID)
-                    {
-                    <div id=@i.CategoryName>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        @Html.DisplayNameFor(model => i.Subcategories)
-                                    </th>
+    </ul>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form asp-action="Edit">
+        @foreach (var i in ViewBag.Categories)
+        {
+            if (i.UserId == ViewBag.userID)
+            {
+                <div id=@i.CategoryName>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Subcategory
+                                </th>
 
-                                    <th>
-                                        Transaction Amount
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in i.Subcategories)
+                                <th>
+                                    Transaction Amount
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in i.Subcategories)
+                            {
+                                @foreach (var j in item.Transactions)
                                 {
                                     <tr>
                                         <td>
-                                               @item.SubcategoryName
+                                            @item.SubcategoryName
                                         </td>
                                         <td>
-                                               Temp
+                                            @j.Value
                                         </td>
                                         <td>
-                                             <a asp-area="" asp-controller="Transactions" asp-action="Edit">Edit</a>
-                                             <a asp-area="" asp-controller="Transactions" asp-action="Details">Details</a>
-                                             <a asp-area="" asp-controller="Transactions" asp-action="Delete">Delete</a>
+                                            <a asp-area="" asp-controller="Transactions" asp-action="Edit" asp-route-id="@j.TransactionsId">Edit</a>
+                                            <a asp-area="" asp-controller="Transactions" asp-action="Details" asp-route-id="@j.TransactionsId">Edit</a>
+                                            <a asp-area="" asp-controller="Transactions" asp-action="Delete" asp-route-id="@j.TransactionsId">Edit</a>
                                         </td>
 
                                     </tr>
                                 }
+                            }
                         </tbody>
-                            
-                        </table>
-                    </div>
-                    }
-                }
-                
-            </form>
 
-        </div>
+                    </table>
+                </div>
+            }
+        }
 
-            <script>
-                $(function () {
-                    $("#TabsSet1").tabs();
-                });
-            </script>
+    </form>
+
+</div>
+
+<script>
+    $(function () {
+        $("#TabsSet1").tabs();
+    });
+</script>
+
