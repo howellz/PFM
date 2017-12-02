@@ -46,11 +46,10 @@ namespace PFM.Controllers
         }
 
         // GET: Transactions/Create
-        public IActionResult Create(int userID)
+        public IActionResult Create(int? userID)
         {
             ViewBag.userID = userID;
             ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName");
-            ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email");
             return View();
         }
 
@@ -70,7 +69,6 @@ namespace PFM.Controllers
                 return RedirectToAction("Transaction", "Categories", new { userID = transactions.UserId });
             }
             ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName", transactions.SubcategoryId);
-            ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", transactions.UserId);
             return View(transactions);
         }
 
@@ -161,11 +159,13 @@ namespace PFM.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Reset()
+        public async Task<IActionResult> Reset(int userID)
         {
 
             var transactions = _context.Transactions
                 .Include(t => t.User);
+
+            ViewBag.userID = userID;
             if (transactions == null)
             {
                 return NotFound();
@@ -177,18 +177,21 @@ namespace PFM.Controllers
         // POST: Transactions/Delete/5
         [HttpPost, ActionName("Reset")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetConfirmed()
+        public async Task<IActionResult> ResetConfirmed(int userID)
         {
             var transactions = _context.Transactions;
             if (transactions.Count() > 0)
             {
                 foreach (var i in transactions)
                 {
-                    _context.Transactions.Remove(i);
+                    if (i.UserId == userID)
+                    {
+                        _context.Transactions.Remove(i);
+                    }
                 }
             }
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Home", "Categories", new { userID = userID });
         }
 
         private bool TransactionsExists(int id)

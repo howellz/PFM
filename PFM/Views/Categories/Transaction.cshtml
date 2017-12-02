@@ -5,9 +5,9 @@
 
 <h1>Transactions</h1>
 
-<p>
-    <a asp-area="" asp-controller="Transactions" asp-action="Create" asp-route-userID="@ViewBag.userID"> Create New</a>
-</p>
+<div>
+    <a  class="btn btn-primary btn-sm" asp-controller="Categories" asp-route-userID="@ViewBag.userID" asp-action="Home">Back to Home</a>
+</div>
 
 <div id="TabsSet1">
     <ul>
@@ -69,7 +69,11 @@
 
     </form>
 
+	<p>
+    <a class="btn btn-primary btn-sm" asp-area="" asp-controller="Transactions" asp-action="Create" asp-route-userID="@ViewBag.userID"> Create New Transaction</a>
+    </p>
 </div>
+
 
 <script>
     $(function () {
