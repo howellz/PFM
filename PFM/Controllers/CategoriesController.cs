@@ -31,8 +31,9 @@ namespace PFM.Controllers
 
             ViewBag.subDeductionsSum = new Func<int, int>(subDeductionsSum);
             ViewBag.subRemaining = new Func<int, int>(subRemaining);
-
+            var name = _context.User.SingleOrDefault(s => s.UserId == userID).FullName;
             ViewBag.userID = userID;
+            ViewBag.name = name;
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
 
@@ -69,16 +70,12 @@ namespace PFM.Controllers
         public async Task<IActionResult> Home(int? userID)
         {
             var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(c => c.Subcategories);
-            int? i;
-            if (userID == null)
-            {
-                i = TempData["id"] as int?;
-            }
-            else
-            {
-                i = userID;
-            }
+            int? i = userID;
             ViewBag.userID = i;
+            var user = _context.User.SingleOrDefault(s => s.UserId == userID);
+
+            ViewBag.name = user.FullName;
+
             ViewBag.remaining = totalRemaining(i);
 
             return View(await personalFinanceManagerDBContext.ToListAsync());

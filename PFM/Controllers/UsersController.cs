@@ -40,9 +40,7 @@ namespace PFM.Controllers
                 ViewBag.errormsg = "User name or password is incorrect!";
                 return View();
             }
-            var id = user.UserId;
-            TempData["id"] = id;
-            return RedirectToAction("Home", "Categories");
+            return RedirectToAction("Home", "Categories", new { userID = user.UserId });
 
         }
 
