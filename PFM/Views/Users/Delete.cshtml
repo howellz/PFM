@@ -40,6 +40,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="UserId" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-controller="Categories" asp-route-userID="@Model.UserId" asp-action="Index">Back to planner</a>
+        <a asp-controller="Users" asp-route-id="@Model.UserId" asp-action="Index">Back to planner</a>
     </form>
 </div>

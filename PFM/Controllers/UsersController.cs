@@ -161,11 +161,19 @@ namespace PFM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-
+            
             foreach (var i in _context.Categories)
             {
                 if (i.UserId == id)
                 {
+                    foreach (var k in _context.Subcategories)
+                    {
+                        if (k.CategoryId == id)
+                        {
+                            _context.Subcategories.Remove(k);
+                        }
+
+                    }
                     _context.Categories.Remove(i);
                 }
             }
