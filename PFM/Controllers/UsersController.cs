@@ -40,9 +40,7 @@ namespace PFM.Controllers
                 ViewBag.errormsg = "User name or password is incorrect!";
                 return View();
             }
-            var id = user.UserId;
-            TempData["id"] = id;
-            return RedirectToAction("Home", "Categories");
+            return RedirectToAction("Home", "Categories", new { userID = user.UserId });
 
         }
 
@@ -140,23 +138,6 @@ namespace PFM.Controllers
             return View(user);
         }
 
-        // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.User                    
-                .SingleOrDefaultAsync(m => m.UserId == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
 
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
