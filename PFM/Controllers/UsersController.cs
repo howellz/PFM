@@ -108,7 +108,7 @@ namespace PFM.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,UserFirstName,UserLastName,Email,Password")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,UserFirstName,UserLastName,Email,ConfirmEmail,Password,ConfirmPassword")] User user)
         {
             if (id != user.UserId)
             {
@@ -146,7 +146,7 @@ namespace PFM.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User
+            var user = await _context.User                    
                 .SingleOrDefaultAsync(m => m.UserId == id);
             if (user == null)
             {
@@ -161,7 +161,17 @@ namespace PFM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
+            foreach (var i in _context.Categories)
+            {
+                if (i.UserId == id)
+                {
+                    _context.Categories.Remove(i);
+                }
+            }
+
             var user = await _context.User.SingleOrDefaultAsync(m => m.UserId == id);
+
             _context.User.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Home");
