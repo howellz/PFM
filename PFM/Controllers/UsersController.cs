@@ -40,7 +40,9 @@ namespace PFM.Controllers
                 ViewBag.errormsg = "User name or password is incorrect!";
                 return View();
             }
-            return RedirectToAction("Home", "Categories", new { userID = user.UserId });
+            var id = user.UserId;
+            TempData["id"] = id;
+            return RedirectToAction("Home", "Categories");
 
         }
 
@@ -161,19 +163,25 @@ namespace PFM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            
-            foreach (var i in _context.Categories)
+
+            foreach (var i in _context.Transactions)
             {
                 if (i.UserId == id)
                 {
-                    foreach (var k in _context.Subcategories)
-                    {
-                        if (k.CategoryId == id)
-                        {
-                            _context.Subcategories.Remove(k);
-                        }
+                    _context.Transactions.Remove(i);
+                }
+            }
+            var cat = _context.Categories.Include(c => c.Subcategories);
 
+            foreach (var i in cat)
+            {
+                if (i.UserId == id)
+                {
+                    foreach (var k in i.Subcategories)
+                    {
+                        _context.Subcategories.Remove(k);
                     }
+
                     _context.Categories.Remove(i);
                 }
             }
