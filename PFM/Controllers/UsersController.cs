@@ -79,9 +79,16 @@ namespace PFM.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                if (_context.User.SingleOrDefaultAsync(m => m.Email == user.Email) == null)
+                {
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.emssg = "Account already exists!";
+                }
             }
             return View(user);
         }
@@ -138,6 +145,23 @@ namespace PFM.Controllers
             return View(user);
         }
 
+        // GET: Users/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.User
+                .SingleOrDefaultAsync(m => m.UserId == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
 
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
