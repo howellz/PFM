@@ -49,7 +49,8 @@ namespace PFM.Controllers
         public IActionResult Create(int? userID)
         {
             ViewBag.userID = userID;
-            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName");
+
+            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories.Where(s => s.Category.UserId == userID), "SubcategoryId", "SubcategoryName");
             return View();
         }
 
@@ -60,13 +61,24 @@ namespace PFM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TransactionsId,UserId,SubcategoryId,Value")] Transactions transactions)
         {
+            String errmssg = "";
             if (ModelState.IsValid)
             {
-                _context.Add(transactions);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Transaction", "Categories", new { userID = transactions.UserId });
+                var subcategory = await _context.Subcategories.SingleOrDefaultAsync(m => m.SubcategoryId == transactions.SubcategoryId);
+                var category = await _context.Categories.SingleOrDefaultAsync(m => m.CategoryId == subcategory.CategoryId);
+                if (category.UserId == transactions.UserId)
+                {
+                    _context.Add(transactions);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Transaction", "Categories", new { userID = transactions.UserId });
+                }
+
+                errmssg = "Invalid subcategory ";
             }
-            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName", transactions.SubcategoryId);
+
+            errmssg = "Invalid Value";
+            ViewBag.errmssg = errmssg;
+            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories.Where(s => s.Category.UserId == transactions.UserId), "SubcategoryId", "SubcategoryName", transactions.SubcategoryId);
             return View(transactions);
         }
 
@@ -84,7 +96,7 @@ namespace PFM.Controllers
             {
                 return NotFound();
             }
-            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName", transactions.SubcategoryId);
+            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories.Where(s => s.Category.UserId == transactions.UserId), "SubcategoryId", "SubcategoryName", transactions.SubcategoryId);
             return View(transactions);
         }
 
@@ -99,31 +111,38 @@ namespace PFM.Controllers
             {
                 return NotFound();
             }
-
+            String errmssg = "";
             if (ModelState.IsValid)
             {
-                try
+                var subcategory = await _context.Subcategories.SingleOrDefaultAsync(m => m.SubcategoryId == transactions.SubcategoryId);
+                var category = await _context.Categories.SingleOrDefaultAsync(m => m.CategoryId == subcategory.CategoryId);
+                if (category.UserId == transactions.UserId)
                 {
-                    _context.Update(transactions);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TransactionsExists(transactions.TransactionsId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(transactions);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!TransactionsExists(transactions.TransactionsId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction("Transaction", "Categories", new { userID = transactions.UserId });
                 }
-                return RedirectToAction("Transaction", "Categories", new { userID = transactions.UserId });
+                errmssg = "Invalid subcategory ";
             }
-            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName", transactions.SubcategoryId);
+            errmssg += "Invalid Value";
+            ViewBag.errmssg = errmssg;
+            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories.Where(s => s.Category.UserId == transactions.UserId), "SubcategoryId", "SubcategoryName", transactions.SubcategoryId);
             return View(transactions);
         }
-
         // GET: Transactions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
