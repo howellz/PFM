@@ -85,7 +85,6 @@ namespace PFM.Controllers
                 return NotFound();
             }
             ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName", transactions.SubcategoryId);
-            ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", transactions.UserId);
             return View(transactions);
         }
 
@@ -122,7 +121,6 @@ namespace PFM.Controllers
                 return RedirectToAction("Transaction", "Categories", new { userID = transactions.UserId });
             }
             ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "SubcategoryId", "SubcategoryName", transactions.SubcategoryId);
-            ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", transactions.UserId);
             return View(transactions);
         }
 
