@@ -118,10 +118,11 @@ namespace PFM.Controllers
 
         public async Task<IActionResult> Transaction(int? userID)
         {
-            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
+            var personalFinanceManagerDBContext = _context.Subcategories.Include(c => c.Category).Include(i => i.Transactions);
 
             ViewBag.userID = userID;
 
+            ViewBag.Categories = _context.Categories;
             return View(await personalFinanceManagerDBContext.ToListAsync());
         }
 
