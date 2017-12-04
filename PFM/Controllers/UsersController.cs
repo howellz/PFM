@@ -77,9 +77,10 @@ namespace PFM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserId,UserFirstName,UserLastName,Email,ConfirmEmail,Password,ConfirmPassword")] User user)
         {
+            ViewBag.emssg = "Input invalid!";
             if (ModelState.IsValid)
             {
-                if (_context.User.SingleOrDefaultAsync(m => m.Email == user.Email) == null)
+                if (_context.User.SingleOrDefault(m => m.Email == user.Email) == null)
                 {
                     _context.Add(user);
                     await _context.SaveChangesAsync();
@@ -90,6 +91,7 @@ namespace PFM.Controllers
                     ViewBag.emssg = "Account already exists!";
                 }
             }
+
             return View(user);
         }
 

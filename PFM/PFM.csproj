@@ -10,6 +10,7 @@
     <EmbeddedResource Remove="Views\NewFolder\**" />
     <None Remove="Views\NewFolder\**" />
     <Compile Remove="Controllers\StartUpController.cs" />
+    <Content Remove="Views\Categories\Details.cshtml" />
     <Content Remove="Views\StartUpPage\Index.cshtml" />
     <Compile Remove="Models\LoginVM.cs" />
   </ItemGroup>

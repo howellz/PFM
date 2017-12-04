@@ -75,6 +75,9 @@ namespace PFM.Controllers
                 return RedirectToAction("Index", "Categories", new { userID = userID });
 
             }
+
+
+            ViewBag.emssg = "Input invalid!";
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", subcategories.CategoryId);
             return View(subcategories);
         }
@@ -88,11 +91,12 @@ namespace PFM.Controllers
             }
 
             var subcategories = await _context.Subcategories.SingleOrDefaultAsync(m => m.SubcategoryId == id);
+            var category = await _context.Categories.SingleOrDefaultAsync(m => m.CategoryId == subcategories.CategoryId);
             if (subcategories == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", subcategories.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories.Where(s=>s.UserId==category.UserId), "CategoryId", "CategoryName", subcategories.CategoryId);
             return View(subcategories);
         }
 
@@ -129,12 +133,14 @@ namespace PFM.Controllers
                 }
 
 
+                ViewBag.emssg = "Input invalid!";
                 var subcategory = _context.Subcategories.Include(m => m.Category).SingleOrDefault(m => m.SubcategoryId == id);
 
                 return RedirectToAction("Index", "Categories", new { userID = subcategory.Category.UserId });
             }
 
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", subcategories.CategoryId);
+            var category = await _context.Categories.SingleOrDefaultAsync(m => m.CategoryId == subcategories.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories.Where(s => s.UserId == category.UserId), "CategoryId", "CategoryName", subcategories.CategoryId);
             return RedirectToAction("Index", "Categories", new { userID = subcategories.Category.UserId });
         }
 

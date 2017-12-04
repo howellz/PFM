@@ -23,7 +23,7 @@ namespace PFM.Controllers
         // GET: Categories
         public async Task<IActionResult> Index(int? userID)
         {
-            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
+            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories).Where(s => s.UserId == userID);
 
 
             //var userID = _context.User.FirstOrDefault().UserId;
@@ -69,7 +69,7 @@ namespace PFM.Controllers
         // GET: Categories
         public async Task<IActionResult> Home(int? userID)
         {
-            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(c => c.Subcategories);
+            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(c => c.Subcategories).Where(s => s.UserId == userID);
             int? i = userID;
             ViewBag.userID = i;
             var user = _context.User.SingleOrDefault(s => s.UserId == userID);
@@ -88,7 +88,7 @@ namespace PFM.Controllers
 
         public async Task<IActionResult> Budgets(int? userID)
         {
-            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories);
+            var personalFinanceManagerDBContext = _context.Categories.Include(c => c.User).Include(i => i.Subcategories).Where(s => s.UserId == userID);
 
             ViewBag.deductionsSum = new Func<int, int>(remaining);
             ViewBag.totalBuget = new Func<int, int>(catSum);
@@ -115,7 +115,7 @@ namespace PFM.Controllers
 
         public async Task<IActionResult> Transaction(int? userID)
         {
-            var personalFinanceManagerDBContext = _context.Subcategories.Include(c => c.Category).Include(i => i.Transactions);
+            var personalFinanceManagerDBContext = _context.Subcategories.Include(c => c.Category).Include(i => i.Transactions).Where(s => s.Category.UserId == userID);
 
             ViewBag.userID = userID;
 
@@ -173,6 +173,8 @@ namespace PFM.Controllers
             }
 
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", categories.UserId);
+
+            ViewBag.emssg = "Input invalid!";
             return View(categories);
             // return RedirectToAction("Index", "Categories", new { userID = categories.UserId });
 
@@ -191,6 +193,7 @@ namespace PFM.Controllers
             {
                 return NotFound();
             }
+
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", categories.UserId);
             return View(categories);
         }
@@ -227,6 +230,7 @@ namespace PFM.Controllers
                 }
                 return RedirectToAction("Index", "Categories", new { userID = categories.UserId });
             }
+            ViewBag.emssg = "Input invalid!";
             ViewData["UserId"] = new SelectList(_context.User, "UserId", "Email", categories.UserId);
             return View(categories);
         }
@@ -293,7 +297,7 @@ namespace PFM.Controllers
         private int totalBudget(int? userID)//
         {
             var sum = 0;
-            foreach (var subcat in _context.Subcategories.Include(e => e.Category))
+            foreach (var subcat in _context.Subcategories.Include(e => e.Category).Where(s => s.Category.UserId == userID))
             {
                 if (subcat.Category.UserId == userID)
                 {
@@ -310,7 +314,7 @@ namespace PFM.Controllers
 
             //var cats = _context.Categories.SingleOrDefault(e => e.CategoryId == catID);
             var sum = 0;
-            var trans = _context.Transactions;
+            var trans = _context.Transactions.Where(s => s.UserId == userID);
 
             foreach (var i in trans)
             {

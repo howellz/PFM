@@ -15,7 +15,7 @@
         {
             if (i.UserId == ViewBag.userID)
             {
-                <li><a href="#@i.CategoryName">@i.CategoryName</a></li>
+                <li><a href="#@i.CategoryId">@i.CategoryName</a></li>
             }
         }
     </ul>
@@ -25,7 +25,7 @@
         {
             if (i.UserId == ViewBag.userID)
             {
-                <div id=@i.CategoryName>
+                <div id=@i.CategoryId>
                     <table class="table">
                         <thead>
                             <tr>
