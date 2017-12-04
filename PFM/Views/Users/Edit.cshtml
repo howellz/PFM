@@ -52,7 +52,7 @@
 </div>
 
 <div>
-    <a asp-area="" asp-controller="Users" asp-route-id="@Model.UserId" asp-action="Index">Home</a>
+    <a class="btn btn-primary btn-sm" asp-controller="Categories" asp-route-userID="@ViewBag.userID" asp-action="Home">Back to Home</a>
 </div>
 
 @section Scripts {
