@@ -12,6 +12,9 @@
     <Compile Remove="Controllers\StartUpController.cs" />
     <Content Remove="Views\Categories\Details.cshtml" />
     <Content Remove="Views\StartUpPage\Index.cshtml" />
+    <Content Remove="Views\Transactions\Details.cshtml" />
+    <Content Remove="Views\Users\Details.cshtml" />
+    <Content Remove="Views\Users\Index.cshtml" />
     <Compile Remove="Models\LoginVM.cs" />
   </ItemGroup>
 
